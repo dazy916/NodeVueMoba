@@ -28,7 +28,13 @@
 						<el-menu-item index="/heroes/create">新建英雄</el-menu-item>
 						<el-menu-item index="/heroes/list">英雄列表</el-menu-item>
 					</el-menu-item-group>
-
+					<el-menu-item-group>
+						<template slot="title">
+							文章
+						</template>
+						<el-menu-item index="/articles/create">新建文章</el-menu-item>
+						<el-menu-item index="/articles/list">文章列表</el-menu-item>
+					</el-menu-item-group>
 				</el-submenu>
 			</el-menu>
 		</el-aside>
@@ -46,24 +52,17 @@
 				<span>王小虎</span>
 			</el-header>
 
-			<el-main style="background-color: rgb(255, 255, 255)">
-				<router-view></router-view>
-				
-			</el-main>
+			<el-main style="background-color: rgb(255, 255, 255)"><router-view></router-view></el-main>
 		</el-container>
 	</el-container>
 </template>
 
-<style>
-
-</style>
+<style></style>
 
 <script>
 export default {
 	data() {
-		return{
-			
-		}
+		return {};
 	}
 };
 </script>
