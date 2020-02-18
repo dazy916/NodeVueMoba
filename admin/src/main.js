@@ -5,7 +5,7 @@ import router from './router'
 
 Vue.config.productionTip = false
 
-import http from './http'
+import http from './http.js'
 
 Vue.prototype.$http = http
 
