@@ -24,7 +24,7 @@ module.exports = app => {
 		if (req.Model.modelName === 'Category') {
 			queryOptions.populate = 'parents'
 		}
-		const items = await req.Model.find().setOptions(queryOptions).limit(10)
+		const items = await req.Model.find().setOptions(queryOptions).limit(100)
 		res.send(items)
 	})
 	// 获取已有值
@@ -44,7 +44,7 @@ module.exports = app => {
 	// 模型中间件
 	const resourceMiddleware = require('../../middleware/resource')
 	app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
-
+	// app.use('/admin/api/rest/:resource',  resourceMiddleware(), router)
 
 	// 上传图片
 	const multer = require('multer')

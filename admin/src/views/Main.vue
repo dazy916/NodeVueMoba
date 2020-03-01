@@ -78,7 +78,7 @@
 				<span>王小虎</span>
 			</el-header>
 
-			<el-main style="background-color: rgb(255, 255, 255)"><router-view></router-view></el-main>
+			<el-main style="background-color: rgb(255, 255, 255)"><router-view :key="$route.path"></router-view></el-main>
 		</el-container>
 	</el-container>
 </template>

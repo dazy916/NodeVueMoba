@@ -2,12 +2,30 @@
 	<div>
 		<h1>{{ id ? '编辑' : '新建' }}英雄</h1>
 		<el-form label-width="80px" @submit.native.prevent="save">
-			<el-tabs value="skills" type="border-card">
+			<el-tabs value="basic" type="border-card">
 				<el-tab-pane label="基本信息" name="basic">
 					<el-form-item label="名称"><el-input v-model="model.name"></el-input></el-form-item>
 					<el-form-item label="头像">
-						<el-upload class="avatar-uploader" :action="$http.defaults.baseURL + '/upload'" :show-file-list="false" :on-success="afterUpload">
+						<el-upload
+							class="avatar-uploader"
+							:headers="getAuthHeaders()"
+							:action="uploadUrl"
+							:show-file-list="false"
+							:on-success="res => $set(model, 'avatar', res.url)"
+						>
 							<img v-if="model.avatar" :src="model.avatar" class="avatar" />
+							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						</el-upload>
+					</el-form-item>
+					<el-form-item label="背景">
+						<el-upload
+							class="avatar-uploader"
+							:headers="getAuthHeaders()"
+							:action="uploadUrl"
+							:show-file-list="false"
+							:on-success="res => $set(model, 'banner', res.url)"
+						>
+							<img v-if="model.banner" :src="model.banner" class="avatar" />
 							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 						</el-upload>
 					</el-form-item>
@@ -39,10 +57,13 @@
 					<el-row type="flex" style="flex-wrap:wrap;margin-top: 1rem;">
 						<el-col :md="12" v-for="(item, i) in model.skills" :key="i">
 							<el-form-item label="名称"><el-input v-model="item.name"></el-input></el-form-item>
+							<el-form-item label="冷却值"><el-input v-model="model.delay"></el-input></el-form-item>
+							<el-form-item label="消耗"><el-input v-model="model.cost"></el-input></el-form-item>
 							<el-form-item label="图标">
 								<el-upload
 									class="avatar-uploader"
-									:action="$http.defaults.baseURL + '/upload'"
+									:headers="getAuthHeaders()"
+									:action="uploadUrl"
 									:show-file-list="false"
 									:on-success="res => $set(item, 'icon', res.url)"
 								>
@@ -53,6 +74,23 @@
 							<el-form-item label="描述"><el-input type="textarea" v-model="item.description"></el-input></el-form-item>
 							<el-form-item label="小提示"><el-input type="textarea" v-model="item.tips"></el-input></el-form-item>
 							<el-form-item style="margin-top: 1rem;"><el-button type="danger" @click="model.skills.splice(i, 1)">删除</el-button></el-form-item>
+						</el-col>
+					</el-row>
+				</el-tab-pane>
+				<el-tab-pane label="拍档" name="partners">
+					<el-button size="small" @click="model.partners.push({})">
+						<i class="el-icon-plus"></i>
+						添加拍档
+					</el-button>
+					<el-row type="flex" style="flex-wrap:wrap;margin-top: 1rem;">
+						<el-col :md="12" v-for="(item, i) in model.partners" :key="i">
+							<el-form-item label="英雄名称">
+								<el-select filterable v-model="item.hero">
+									<el-option v-for="i in heroes" :value="i._id" :label="i.name" :key="i._id"></el-option>
+								</el-select>
+								</el-form-item>
+							<el-form-item label="描述"><el-input type="textarea" v-model="item.description"></el-input></el-form-item>
+							<el-form-item style="margin-top: 1rem;"><el-button type="danger" @click="model.partners.splice(i, 1)">删除</el-button></el-form-item>
 						</el-col>
 					</el-row>
 				</el-tab-pane>
@@ -75,10 +113,15 @@ export default {
 					skills: 0,
 					attack: 0,
 					survive: 0
-				}
+				},
+				avatar: '',
+				name: '',
+				skills: [],
+				partners: []
 			},
 			categories: [],
-			items: []
+			items: [],
+			heroes:[]
 		};
 	},
 	methods: {
@@ -110,16 +153,19 @@ export default {
 		async fetchItems() {
 			const res = await this.$http.get(`rest/items`);
 			this.items = res.data;
+		},
+		async fetchHeroes() {
+			const res = await this.$http.get(`rest/heroes`);
+			this.heroes = res.data;
 		}
 	},
 	created() {
 		this.fetchCategories();
 		this.fetchItems();
+		this.fetchHeroes();
 		this.id && this.fetch();
 	}
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

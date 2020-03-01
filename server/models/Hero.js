@@ -8,6 +8,10 @@ const schema = new mongoose.Schema({
 	avatar: {
 		type: String
 	},
+	// 背景图
+	banner: {
+		type: String
+	},
 	// 职业
 	title: {
 		type: String
@@ -69,7 +73,7 @@ const schema = new mongoose.Schema({
 		type: String
 	},
 	// 搭档
-	partens: [{
+	partners: [{
 		hero: {
 			type: mongoose.SchemaTypes.ObjectId,
 			ref: 'Hero'
@@ -77,7 +81,15 @@ const schema = new mongoose.Schema({
 		description: {
 			type: String
 		}
-	}]
+	}],
+	// 冷却值
+	delay:{
+		type:String
+	},
+	// 消耗
+	cost:{
+		type:String
+	}
 })
 
-module.exports = mongoose.model('Hero', schema)
+module.exports = mongoose.model('Hero', schema,'heroes')
